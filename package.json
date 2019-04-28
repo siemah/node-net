@@ -1,0 +1,9 @@
+{
+  "name": "node-net",
+  "version": "1.0.0",
+  "description": "play with pure node and build a rest ai",
+  "main": "server.js",
+  "repository": "github.com/siemah/node-net",
+  "author": "siemah",
+  "license": "MIT"
+}

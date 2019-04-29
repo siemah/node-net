@@ -1,29 +1,23 @@
 const http = require('http');
+const { promisify } = require('util');
+const mysql = require('mysql');
 const PORT = process.env.PORT || 8888;
 
+const db = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'test'
+});
+db.connect();
+
 http
-  .createServer((req, res) => {
-    http.get(
-      'http://www.jumia.dz',
-      response => {
-        const { statusCode, headers } = response;
-        let error, _res;
-        // if( statusCode !== 200 ) {
-        //   throw new Error(`Request failed status code  ${statusCode}`)
-        // }
-        if( !/(json|html)/i.test(headers['content-type']) ) {
-          res.writeHead(200, {'Content-Type': "text/html"})
-          res.end('<h1>Try another link</h1>')
-        }
-        let dataRaw = '';
-        response.setEncoding('utf8')
-        response.on('data', chunk => dataRaw+=chunk)
-        response.on('end', () => {
-          console.log(headers);
-          res.writeHead(statusCode, {'Content-Type': headers['content-type']})
-          res.end(dataRaw)
-        })
-      }
-    ).on('error', e => console.error(e.message));
+  .createServer( async (req, res) => {
+    let select = db.query('SELECT * FROM users', (err, users) => {
+      if(err) console.log(err.message);
+
+      res.writeHead(200, {'Content-Type': 'application/json'})
+      res.end(JSON.stringify(users))
+    })
   })
   .listen(PORT, e => console.log(`runing on port ${PORT}`));

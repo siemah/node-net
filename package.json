@@ -5,5 +5,9 @@
   "main": "server.js",
   "repository": "github.com/siemah/node-net",
   "author": "siemah",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "mysql": "^2.17.1"
+  }
 }

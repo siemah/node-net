@@ -6,6 +6,7 @@ require('dotenv').config();
 const { PORT, DB_USER, DB_HOST, DB_PASSWORD, DB_DATABASE } = process.env;
 
 const Mysql = require('./models/Mysql')
+const Router = require('./utils/Router')
 
 let db; 
 try {
@@ -20,9 +21,15 @@ try {
   throw new Error(`Connection to database is failed with message: ${error.message}`);
 }
 
-http
-  .createServer( (req, res) => {
-    res.writeHead(200, {'Content-Type': 'application/json'})
-    res.end( JSON.stringify({}) );
-  })
-  .listen(PORT, e => console.log(`runing on port ${PORT}`));
+
+let p = new Mysql(db);
+
+let res = p.insert(
+  'users',
+  ['username', 'password'], 
+  ['username_val', 'email_val']
+).then((result) => {
+  console.log(result);
+}).catch((err) => {
+  console.log(err)
+});

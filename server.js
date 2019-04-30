@@ -21,15 +21,27 @@ try {
   throw new Error(`Connection to database is failed with message: ${error.message}`);
 }
 
-
-let p = new Mysql(db);
-
-let res = p.insert(
-  'users',
-  ['username', 'password'], 
-  ['username_val', 'emaild_val']
-).then((result) => {
-  console.log(result);
-}).catch((err) => {
-  console.log(err)
-});
+http.createServer((req, res)=>{
+  let router = new Router(req, res);
+  router.get('/users', async (req, res) => {
+    let response;
+    let newMysql = new Mysql(db);
+    try {
+      let users = await newMysql.select(
+        ['username', 'password', 'id'],
+        'users',
+        ['username'],
+        ['dayen']
+      )
+      console.log("response" , users);
+      response = users;
+    } catch (error) {
+      response = error.message;
+    }
+    console.log(response)
+    res.writeHead(201, {
+      'content-type': 'application/json'
+    });
+    res.end(JSON.stringify(response));
+  })
+}).listen(PORT, () => console.log('runing'))

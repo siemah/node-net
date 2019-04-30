@@ -17,10 +17,10 @@ class Mysql {
   /**
    * @name insert 
    * insert a data into DB
-   * @param {String} sql SQL query 
-   * @param {Array} values list of values default []
    * @param {String} table name of table to insrt new data
-   * @param {Function}
+   * @param {Array} fields list of fields of table 
+   * @param {Array} values list of values of must be has the same length like fields
+   * @return {Promise} new Promise of result
    */
   insert(table, fields, values) {
     let sql = this._db.format(
@@ -37,6 +37,35 @@ class Mysql {
         sql,
         values,
       }
+    )
+  }
+
+  /**
+   * @name select
+   * select a bunch of data from DB 
+   * @param {Array} fields list of fields to retreive
+   * @param {String} table name of table
+   * @param {Array} whereFields list of fields use on where condition closure
+   * @param {Array} whereValues list of values of whereFields
+   * @return {Promise} the result 
+   */
+  select(fields, table, whereFields = [], whereValues = []) {
+    let sql = this._db.format(
+      'SELECT ?? FROM ??',
+      [fields, table]
+    );
+    if (whereFields.length && whereValues.length ) {
+      sql += ' WHERE '
+      whereFields.map((field, i) => {
+        sql += `??=?`;
+        console.log(i < fields.length - 1);
+        if (i < whereFields.length-1 ) sql += ', '
+      })
+      sql = this._db.format(sql, [whereFields]);
+      sql = this._db.format(sql, [whereValues]);
+    }
+    return this.query(
+      sql
     )
   }
   

@@ -10,8 +10,9 @@ class Router {
    * @param {http.IncomingMessage} req request incoming insctance
    * @param {http.IncomingResponse} res res incoming instance
    */
-  constructor(server) {
-    this._server = server;
+  constructor(req, res) {
+    this._req = req;
+    this._res = res;
   }  
 
 

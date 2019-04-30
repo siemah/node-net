@@ -27,7 +27,7 @@ let p = new Mysql(db);
 let res = p.insert(
   'users',
   ['username', 'password'], 
-  ['username_val', 'email_val']
+  ['username_val', 'emaild_val']
 ).then((result) => {
   console.log(result);
 }).catch((err) => {

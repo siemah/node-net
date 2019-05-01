@@ -23,25 +23,24 @@ try {
 
 http.createServer((req, res)=>{
   let router = new Router(req, res);
-  router.get('/users', async (req, res) => {
+  router.get('/', async (req, res) => {
     let response;
     let newMysql = new Mysql(db);
     try {
-      let users = await newMysql.select(
-        ['username', 'password', 'id'],
-        'users',
+      response = await newMysql.update(
+        'users', 
+        ['username', 'password'], 
+        ['new dayen', 'new password of dayen'],
         ['username'],
         ['dayen']
-      )
-      console.log("response" , users);
-      response = users;
+      );
+      
+      res.writeHead(203, {
+        'Content-Type': 'application/json'
+      })
+      res.end(JSON.stringify(response))
     } catch (error) {
       response = error.message;
     }
-    console.log(response)
-    res.writeHead(201, {
-      'content-type': 'application/json'
-    });
-    res.end(JSON.stringify(response));
   })
-}).listen(PORT, () => console.log('runing'))
+}).listen(PORT, () => console.log(`runing on port ${PORT}`))

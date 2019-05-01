@@ -6,6 +6,9 @@
   "repository": "github.com/siemah/node-net",
   "author": "siemah",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "mysql": "^2.17.1"
